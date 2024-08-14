@@ -52,5 +52,4 @@ jobs:
     - name: Check clojure dependencies with NVD
       env:
         NVD_API_TOKEN: ${{ secrets.NVD_API_TOKEN }}
-      working-directory: ishare-jwt
-      run: ../bin/clojure -J-Dclojure.main.report=stderr -Tnvd nvd.task/check :config-filename '".nvd-config.edn"' :classpath "\"$(../bin/clojure -Spath)\""
+      run: bin/clojure -J-Dclojure.main.report=stderr -Tnvd nvd.task/check :config-filename '".nvd-config.edn"' :classpath "\"$(../bin/clojure -Spath)\""
