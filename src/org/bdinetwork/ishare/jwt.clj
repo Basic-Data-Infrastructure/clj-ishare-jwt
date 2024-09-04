@@ -212,6 +212,11 @@
   [token]
   (check! ::header (jwt/decode-header token)))
 
+(defn x5c->first-public-key
+  "Extract first public-key from x5c header."
+  [x5c]
+  (keys/public-key (cert-reader (first x5c))))
+
 (defn unsign-token
   "Parse a signed token. Returns parsed data or raises exception.
 
@@ -220,8 +225,7 @@
   [token]
   (check! ::signed-token token)
   (let [{:keys [x5c]} (decode-header token)
-        cert-str      (first x5c)
-        pkey          (keys/public-key (cert-reader cert-str))]
+        pkey          (x5c->first-public-key x5c)]
     (check! ::payload (jwt/unsign token pkey {:alg :rs256 :leeway 5}))))
 
 
